@@ -19,7 +19,9 @@
                     <table class="table">
                         <tbody>
                             <tr ng-repeat="friend in profileCtrl.friends.displayName | filter: friendSearchText">
-                                <td class="text" ng-click="profileCtrl.displayUserPosts(friend)">{{friend}}</td>
+                                <td ng-click="profileCtrl.displayUserPosts(friend)" >
+                                    {{friend}}
+                                </td>
                                 <td>
                                     <img class="del-user-img pull-right" src="assets/images/unfollow-user.png" ng-click="profileCtrl.unfollowUser(friend)" />
                                 </td>
@@ -154,7 +156,12 @@
                     <table class="table top-margin">
                         <tbody>
                             <tr ng-repeat="user in profileCtrl.users.displayName | filter: userSearchText">
-                                <td>Insert Profile Pic</td>
+                                <td>
+                                    <img class="avatar-circle" src="/profile-api/image/{{profileCtrl.friends.profilePic[profileCtrl.friends.displayName.indexOf(user)]}}" ng-show="profileCtrl.friends.profilePic[profileCtrl.friends.displayName.indexOf(user)]">
+                                    <div class="avatar-circle" ng-style="profileCtrl.getAvatarStyle(user)" ng-show="!profileCtrl.friends.profilePic[profileCtrl.friends.displayName.indexOf(user)]">
+                                        <span class="avatar-initials" ng-show="!profileCtrl.friends.profilePic[profileCtrl.friends.displayName.indexOf(user)]">{{profileCtrl.avatarText(user)}}</span>
+                                    </div>
+                                </td>
                                 <td>{{user}}</td>
                                 <td ng-show="!profileCtrl.followsUser(user)">
                                     <button type="button" class="btn btn-primary" ng-click="profileCtrl.followUser(user)">

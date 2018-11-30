@@ -268,7 +268,7 @@ module.exports = function(router) {
     //Route to obatin all user information
     //http://<url>/user-api/getUserInfo
     router.get('/getUserInfo/:user', function(req, res){
-        User.findOne({username: req.params.user}, function(err, data){
+        User.findOne({username: req.params.user}, '-password -temporaryToken', function(err, data){
             if(err) throw err;
 
             if(data) res.send(data);
@@ -297,6 +297,25 @@ module.exports = function(router) {
                     success: false,
                     message: "User does not exist",
                     username: req.params.user
+                });
+            }
+        });
+    });
+
+    //Route to get a users profile picture
+    //http://<url>/user-api/getProfilePic
+    router.get('/getProfilePic/:user', function(req, res){
+        User.findOne({username: req.params.user}, '-_id profilePicture', function(err, user){
+            if(err) throw err;
+
+            if(user && user.profilePicture){
+                res.json({
+                    success: true,
+                    picture: user.profilePicture
+                });
+            } else{
+                res.json({
+                    success: false,
                 });
             }
         });
@@ -402,6 +421,7 @@ module.exports = function(router) {
     //Retrieving friends from a user
     //http://<url>/user-api/getFriends
     router.get('/getFriends/:user', function(req, res){
+        console.log(req.params.user);
         User.find({username: req.params.user}, '-_id following', function(err, data){
             if(err) throw err;
             res.send(data);

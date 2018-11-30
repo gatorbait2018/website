@@ -171,7 +171,8 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
         profile.userposts = [];
         profile.friends = {
             username: [],
-            displayName: []
+            displayName: [],
+            profilePic: []
         };
         profile.imgLocation = {};
         profile.uploadImagePreview = document.getElementById("PreviewUploadImage");
@@ -201,6 +202,14 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
                                 User.removeFriend(removeFriend);
                             }
                         });
+
+                        User.getProfilePicFile(friends[index]).then(function(res){
+                            if(res.data.success){
+                                profile.friends.profilePic.push(res.data.picture);
+                            } else{
+                                profile.friends.profilePic.push(false);
+                            }
+                        });
                     }
                 });
 
@@ -227,6 +236,17 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
                     profile.userposts.push(response.data[index]);
                 }
             });
+        }
+
+        //Function to generate avatar text
+        profile.avatarText = function(user){
+            return user[0].toUpperCase();
+        }
+
+        // Generating avatar style
+        profile.getAvatarStyle = function(user){
+            var color = User.getAvatarColor(user[0].toUpperCase());
+            return { 'background-color' : color}
         }
 
         //Adding a friend for current user
@@ -423,6 +443,7 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
             }
 
             $scope.$apply(function(){
+                profile.userModal = false;
                 profile.modalPosts = locationPosts;
                 document.getElementById("displayPostsModal").click();
             }, 10);
