@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
 <div class="home-page">
     <!-- FADING IN AND OUT PIXMAP MESSAGE -->
     <div class="pixmap-message">
@@ -16,32 +17,46 @@
 
     <!--- FADING IN WEBSITE CONTENT -->
     <div class="fade-in">
-        <div class="blurred-bg-contain">
-            <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
-            <div class="content">
-                <div class="text">
-                    <div style="text-align: center">
-                        <h1>
-                            <font size="50"> See what's happening in <br />
-                                in the world right now </font> <br />
-                        </h1>
-                        <p class="small"> </p>
-                    </div>
+        <div class="video-background">
+                <video id="video-background" preload="auto" autoplay="true" loop="loop" muted="muted">
+                                <source src="/assets/images/background.mp4" type="video/mp4">
+                                Video not supported
+                        </video>
+    <body>
+        <div class="login">
+            <div class="login-style">
+                 <div>
+		 <!-- USER LOG IN FORM -->
+                <form ng-submit="userCtrl.logIn(loginData)" style="width: 300px; height: 50px;">
+                        <br>
+                        <!-- DO NOT COMBINE THE TEXTBOX DIV TOGETHER -->
+                        <div class="textbox">
+                                <input type="text" name="username" placeholder="Username" ng-model="userCtrl.loginData.username" required>
+                        </div>
+                        <div class="textbox">
+                                <input type="password" name="password" placeholder="Password" ng-model="userCtrl.loginData.password" required>
+                        </div> <br>
 
-                    <h1> <small>
-                            <div style="text-align: center">
-                                <p class="line-height">
-                                    <a href="https://pixmapworld.herokuapp.com/login" class="swagButton"> Sign In </a> <br /> </p>
-                                <a href="https://pixmapworld.herokuapp.com/register" class="swagButton">Sign Up </a> <br />
-                            </div>
-                        </small> </h1>
-                </div>
-
-                <div class="blur"></div>
-            </div>
+                <center> <button class="btn btn-login" type="submit">Login</button> </center>
+                <center> <p class="message"> Not Registered? <a href="register" style="color: #F8B195">Register</a></p> </center>
+                </form>
+	
+	<!-- OUTPUT MESSAGES -->
+	
+	<div class="row show-hide-message" ng-show="userCtrl.successMsg">
+                <div class="alert alert-success" style="position: absolute; top: 70%; width: 115%; left: 15%">{{userCtrl.successMsg}}</div>
         </div>
-    </div>
 
+        <div class="row show-hide-message" ng-show="userCtrl.errorMsg">
+                <div class="alert alert-danger" style= "top:30%; position: absolute; width: 115%;  left: 15%;">{{userCtrl.errorMsg}}</div>
+        </div>
+
+
+         </div> <!-- login style -->
+       </div> <!-- login -->
+
+    </body>
+   </div>
+  </div>
 </div>
-
 </html>
