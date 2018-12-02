@@ -171,7 +171,8 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
         profile.userposts = [];
         profile.friends = {
             username: [],
-            displayName: []
+            displayName: [],
+            profilePic: []
         };
         profile.imgLocation = {};
         profile.uploadImagePreview = document.getElementById("PreviewUploadImage");
@@ -204,9 +205,18 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
                     }
                 });
 
-                //Retrieving all users
+                //Retrieving all users and their profile picture
                 User.getAllUsers(profile.username).then(function(response) {
                     profile.users = response.data;
+                    if(profile.users){
+                        profile.users.profilePic = [];
+                        for(index in profile.users.username){
+                            User.getProfilePicFile(profile.users.username[index]).then(function(res){
+                                if(res.data.success)profile.users.profilePic.push(res.data.picture);
+                                else profile.users.profilePic.push(false);
+                            });
+                        }
+                    }
                 });
 
                 //Retrieve current user image posts
@@ -227,6 +237,17 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
                     profile.userposts.push(response.data[index]);
                 }
             });
+        }
+
+        //Function to generate avatar text
+        profile.avatarText = function(user){
+            return user[0].toUpperCase();
+        }
+
+        // Generating avatar style
+        profile.getAvatarStyle = function(user){
+            var color = User.getAvatarColor(user[0].toUpperCase());
+            return { 'background-color' : color}
         }
 
         //Adding a friend for current user
@@ -309,6 +330,15 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
                     });
                 }
             }
+        }
+
+        //Function to get profile picture given a display name
+        profile.getProfilePicture = function(displayName){
+            var index = profile.users.displayName.indexOf(displayName);
+            var file = profile.users.profilePic[index];
+
+            if(file == undefined) return false;
+            else return file;
         }
 
         //Function to display picture prior to upload
@@ -423,6 +453,7 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
             }
 
             $scope.$apply(function(){
+                profile.userModal = false;
                 profile.modalPosts = locationPosts;
                 document.getElementById("displayPostsModal").click();
             }, 10);

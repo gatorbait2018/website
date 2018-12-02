@@ -36,7 +36,7 @@
                         <div class="textbox">
                                 <input type="password" name="password" placeholder="Password" ng-model="userCtrl.loginData.password" required>
                         </div> <br>
-
+                <br>
                 <center> <button class="btn btn-login" type="submit">Login</button> </center>
                 <center> <p class="message"> Not Registered? <a href="register" style="color: #F8B195">Register</a></p> </center>
                 </form>
@@ -44,11 +44,11 @@
 	<!-- OUTPUT MESSAGES -->
 	
 	<div class="row show-hide-message" ng-show="userCtrl.successMsg">
-                <div class="alert alert-success" style="position: absolute; top: 70%; width: 115%; left: 15%">{{userCtrl.successMsg}}</div>
+                <div class="alert alert-success" style="position: absolute; top: 47%; width: 115%; left: 15%">{{userCtrl.successMsg}}</div>
         </div>
 
         <div class="row show-hide-message" ng-show="userCtrl.errorMsg">
-                <div class="alert alert-danger" style= "top:30%; position: absolute; width: 115%;  left: 15%;">{{userCtrl.errorMsg}}</div>
+                <div class="alert alert-danger" style= "top:47%; position: absolute; width: 115%;  left: 15%;">{{userCtrl.errorMsg}}</div>
         </div>
 
 

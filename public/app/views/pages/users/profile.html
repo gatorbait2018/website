@@ -19,12 +19,19 @@
                     <table class="table">
                         <tbody>
                             <tr ng-repeat="friend in profileCtrl.friends.displayName | filter: friendSearchText">
-                                <td class="text" ng-click="profileCtrl.displayUserPosts(friend)">{{friend}}</td>
+                                <td>
+                                    <img class="avatar-sm-circle" src="/profile-api/image/{{profileCtrl.getProfilePicture(friend)}}" ng-show="profileCtrl.getProfilePicture(friend)">
+                                    <div class="avatar-sm-circle" ng-style="profileCtrl.getAvatarStyle(friend)" ng-show="!profileCtrl.getProfilePicture(friend)">
+                                        <span class="avatar-sm-initials" ng-show="!profileCtrl.getProfilePicture(friend)">{{profileCtrl.avatarText(friend)}}</span>
+                                    </div>
+                                </td>
+                                <td ng-click="profileCtrl.displayUserPosts(friend)">{{friend}}</td>
                                 <td>
                                     <img class="del-user-img pull-right" src="assets/images/unfollow-user.png" ng-click="profileCtrl.unfollowUser(friend)" />
                                 </td>
                             </tr>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td>
                                     <img class="add-user-img pull-right" src="assets/images/add-user.png" data-toggle="modal" data-target="#addFriendModal" />
@@ -154,7 +161,12 @@
                     <table class="table top-margin">
                         <tbody>
                             <tr ng-repeat="user in profileCtrl.users.displayName | filter: userSearchText">
-                                <td>Insert Profile Pic</td>
+                                <td>
+                                    <img class="avatar-sm-circle" src="/profile-api/image/{{profileCtrl.users.profilePic[$index]}}" ng-show="profileCtrl.users.profilePic[$index]">
+                                    <div class="avatar-sm-circle" ng-style="profileCtrl.getAvatarStyle(user)" ng-show="!profileCtrl.users.profilePic[$index]">
+                                        <span class="avatar-sm-initials" ng-show="!profileCtrl.users.profilePic[$index]">{{profileCtrl.avatarText(user)}}</span>
+                                    </div>
+                                </td>
                                 <td>{{user}}</td>
                                 <td ng-show="!profileCtrl.followsUser(user)">
                                     <button type="button" class="btn btn-primary" ng-click="profileCtrl.followUser(user)">
