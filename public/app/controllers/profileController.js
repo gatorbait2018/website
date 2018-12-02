@@ -202,20 +202,21 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
                                 User.removeFriend(removeFriend);
                             }
                         });
-
-                        User.getProfilePicFile(friends[index]).then(function(res){
-                            if(res.data.success){
-                                profile.friends.profilePic.push(res.data.picture);
-                            } else{
-                                profile.friends.profilePic.push(false);
-                            }
-                        });
                     }
                 });
 
-                //Retrieving all users
+                //Retrieving all users and their profile picture
                 User.getAllUsers(profile.username).then(function(response) {
                     profile.users = response.data;
+                    if(profile.users){
+                        profile.users.profilePic = [];
+                        for(index in profile.users.username){
+                            User.getProfilePicFile(profile.users.username[index]).then(function(res){
+                                if(res.data.success)profile.users.profilePic.push(res.data.picture);
+                                else profile.users.profilePic.push(false);
+                            });
+                        }
+                    }
                 });
 
                 //Retrieve current user image posts
@@ -329,6 +330,15 @@ angular.module('profileController', ['locationServices', 'userServices', 'upload
                     });
                 }
             }
+        }
+
+        //Function to get profile picture given a display name
+        profile.getProfilePicture = function(displayName){
+            var index = profile.users.displayName.indexOf(displayName);
+            var file = profile.users.profilePic[index];
+
+            if(file == undefined) return false;
+            else return file;
         }
 
         //Function to display picture prior to upload
